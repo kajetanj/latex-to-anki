@@ -1,0 +1,248 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{polski}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{dsfont}
+\usepackage{mathabx}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\def\Xint#1{\mathchoice
+   {\XXint\displaystyle\textstyle{#1}}%
+   {\XXint\textstyle\scriptstyle{#1}}%
+   {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+   {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+   \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+     \vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\dashint{\Xint-}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\ind}[1]{\mathds{1}_{#1}}
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\title{Równania różniczkowe cząstkowe}
+\date{Styczeń 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Klasyczna teoria, cz. 1}
+
+\subsection{Metoda charakterystyk}
+$F(p,z,x): \R^{2n+1} \to \R$, $g: \Gamma \to \R$ gładkie. $U$ otwarty.
+
+$$
+  (*)
+  \begin{cases}
+    F(Du, u, x) = 0 & \text{ w } U \\
+    u = g           & \text{ w } \Gamma \subset \partial U
+  \end{cases}
+$$
+
+\begin{align*}
+    \mathbf{p}(s) &= Du(\mathbf{x}(s)) \\        
+             z(s) &= u(\mathbf{x}(s))
+\end{align*}
+Poniżej $\mathbf{p}, z, \mathbf{x}$ od $s$, $F$ od $\mathbf{p}, z, \mathbf{x}$.
+$$
+  (**)
+  \begin{cases}
+    (a) \; \dot{\mathbf{p}} = - D_x F - D_z F \cdot \mathbf{p} \\
+    (b)  \; \dot{z} = D_p F \cdot \mathbf{p}\\
+    (c)  \; \dot{\mathbf{x}} = D_p F
+  \end{cases}
+$$
+Jeżeli $u \in C^2(U)$ spełnia $(*)$, a $\mathbf{x}$ spełnia $(**)(c)$, to $\mathbf{p}$ i $z$ spełniają $(**)(a)$ i $(**)(b)$.
+
+\subsection{Twierdzenie Greena}
+$\Omega \subset \R^n, \partial \Omega$ lokalnie $C^1$, a $\vec{n} = (n_1, \ldots, n_n)$ to wskazujący na zewnątrz $\Omega$ wektor normalny.
+\begin{enumerate}
+    \item $v: \Omega \to \R^n, v \in C^1(\Omega) \cap C(\overline{\Omega})$
+    $$ \int_\Omega \operatorname{div} v\,dx = \int_{\partial\Omega} v \cdot \vec{n}\,dS(x) $$
+    \item $f \in C^1(\Omega, \R)$
+    $$ \int_\Omega f_{x_i}\,dx = \int_{\partial\Omega} f n_i \,dS(x) $$
+    \item $f,g \in C^1(\Omega, \R)$
+    $$ \int_\Omega f_{x_i} g\,dx = \int_{\partial\Omega} f g n_i \,dS(x)
+       - \int_\Omega f g_{x_i}\,dx $$
+\end{enumerate}
+
+\subsection{Funkcje harmoniczne}
+
+$U \subset \R^n$. Funkcję $u: U \to \R$ nazywamy
+\begin{itemize}
+    \item Harmoniczną, jeśli $$\triangle u = 0.$$
+    \item Podharmoniczną, jeśli $$-\triangle u \leq 0.$$
+    \item Nadharmoniczną, jeśli $$-\triangle u \geq 0.$$
+\end{itemize}
+
+\subsection{Własność wartości średniej (MVP) dla funkcji harmonicznych}
+Jeżeli $u \in C^2(U)$ jest harmoniczna, to dla każdej kuli $B(x, r) \subset U$ zachodzi
+$$ u(x) =  \dashint_{B(x,r)} u\,dy = \dashint_{\partial B(x,r)} u\,dS(y).$$
+
+\subsection{Zasada maksimum dla funkcji harmonicznych}
+Jeżeli $U \subset \R^n$, otwarty i ograniczony, a $u \in C^2(U) \cap C(\overline{U})$ jest harmoniczna wewnątrz $U$, to
+$$ \max_{\overline{U}} u = \max_{\partial U} u.$$
+Ponadto, jeśli $U$ jest spójny i istnieje punkt $x_0 \in U$ taki, że
+$$ u(x_0) = \max_{\overline{U}} u,$$
+to $u$ jest stała w $U$.
+
+\section{Równanie ciepła i transformata Fouriera}
+
+\subsection{Transformata Fouriera}
+Dla $f \in L^1(\R^n)$, transformatą Fouriera nazywamy
+
+$$ \widehat{f}(\xi) = \F(f)(\xi) = \frac{1}{(2\pi)^{n/2}} \int_{\R^n} e^{-ix \cdot \xi} f(x)\,dx, $$
+a odwrotna transformata Fouriera to
+
+$$\widecheck{f}(\xi) = \F^{-1}(f)(\xi) = \frac{1}{(2\pi)^{n/2}} \int_{\R^n} e^{ix \cdot \xi} f(x)\,dx. $$
+
+\subsection{Własności transformaty Fouriera}
+Niech $u, v \in L^2(\R^n)$.
+\begin{enumerate}
+    \item Transformata pochodnej:\\
+          Dla każdego wielowskaźnika $\alpha$, takiego że $D^\alpha u \in L^2(\R^n)$ zachodzi
+          $$ \F(D^\alpha u)(\xi) = (i\xi)^\alpha \widehat{u}(\xi).$$
+    \item Transformata splotu:
+          $$\F(u * v) = (2\pi)^{n/2}\widehat{u}\widehat{v}.$$
+    \item Odwracalność:
+          $$\F^{-1}(\widehat{u}) = u.$$
+\end{enumerate}
+
+\subsection{Twierdzenie Plancherela}
+Niech $u \in L^1(\R^n) \cap L^2(\R^n)$. Wówczas $\widehat{u}, \widecheck{u} \in L^2(\R^n)$ i
+$$ \norm{\widehat{u}}_{L^2} = \norm{\widecheck{u}}_{L^2} = \norm{u}_{L^2}. $$
+
+\section{Przestrzenie Sobolewa i słabe rozwiązania}
+
+\subsection{Słaba pochodna}
+$v$ jest $\alpha$-tą słabą pochodną funkcji $u$, oznaczaną $D^\alpha u$, o ile
+$$ \int_U u D^\alpha \varphi \, dx = (-1)^{|\alpha|} \int_U v \varphi \, dx, $$
+dla każdej funkcji próbnej $\varphi \in C^\infty_c(U)$.
+
+\subsection{Przestrzeń Sobolewa $W^{k,p}(U)$}
+składa się ze wszystkich funkcji lokalnie całkowalnych $u: U \to \R$ takich, że dla każdego wielowskaźnika $\alpha$ długości $|\alpha| \leq k$, pochodna $D^\alpha u$ istnieje w słabym sensie i należy do $L^p (U)$.\\
+
+\noindent
+Normę określamy następująco
+$$ \norm{u}_{W^{k,p}} = \big( \sum_{|\alpha| \leq k} \int_U |D^\alpha u|^p \big)^{1/p},$$
+bądź równoważnie
+$$ \norm{u}_{W^{k,p}} = \sum_{|\alpha| \leq k} \int_U \norm{D^\alpha u}_{L^p}.$$
+
+\subsection{Aproksymacja funkcjami gładkimi}
+Niech $u \in W^{1,p}(U)$, wówczas
+\begin{enumerate}
+    \item Jeżeli $U$ nie jest ograniczony, to\\
+          istnieją funkcje $u^\varepsilon \in C^\infty(U_\varepsilon)$ takie, że
+          $$ u^\varepsilon \to u \text{ w } W^{k,p}_\text{loc}(U) \text{, gdy } \varepsilon \to 0.  $$
+    \item Jeżeli U jest ograniczony, to\\
+          istnieją funkcje $u_m \in C^\infty(U) \cap W^{k,p}(U)$ takie, że
+          $$ u_m \to u \text{ w } W^{k,p}(U).  $$
+    \item Jeżeli U jest ograniczony i $\partial U \in C^1$, to\\
+          istnieją funkcje $u_m \in C^\infty(\overline{U})$ takie, że
+          $$ u_m \to u \text{ w } W^{k,p}(U).  $$
+\end{enumerate}
+
+\subsection{Przedłużanie}
+Niech $1 \leq p \leq \infty$, $U$ będzie otwarty, a $\partial U \in C^1$. Wybierzmy ograniczony i otwarty zbiór $V$ taki, że $U \subset \subset V$. Wówczas istnieje ograniczony operator liniowy
+$$ E: W^{1,p}(U) \to W^{1,p}(\R^n), $$
+taki, że dla każdej funkcji $u$:
+\begin{enumerate}
+    \item $Eu = u$ p.w. w $U$,
+    \item $Eu$ ma nośnik zawarty w $V$
+    \item $\norm{Eu}_{W^{1,p}(\R^n)} \leq C \norm{Eu}_{W^{1,p}(U)}$, przy czym stała $C$ nie zależy od $u$.
+\end{enumerate}
+
+\subsection{Twierdzenie o śladzie}
+Załóżmy, że $U$ jest zbiorem ograniczonym i $\partial U \in C^1$. Istnieje wówczas ograniczony operator liniowy
+$$ T: W^{1,p}(U) \to L^p(\partial U) $$
+taki, że
+\begin{enumerate}
+    \item $Tu = u|_{\partial U}$, jeśli $u \in W^{1,p}(U) \cap C(\overline{U}).$
+    \item Istnieje stała $C$ taka, że dla każdej funkcji $u \in W^{1,p}(U)$
+          $$\norm{Tu}_{L^p(\partial U)} \leq C \norm{u}_{W^{1,p}(U)}.$$
+\end{enumerate}
+
+\subsection{Wykładnik sprzężony w sensie Sobolewa do $p$}
+$$ p^* := \frac{np}{n-p}, $$
+zauważmy, że
+$$ \frac{1}{p^*} = \frac{1}{p} - \frac{1}{n}, p^* > p.$$
+
+\subsection{Nierówność G-N-S}
+Załóżmy, że $1 \leq p < n$. Istnieje stała $C$ taka, że 
+$$\norm{u}_{L^{p^*}(\R^n)} \leq C \norm{\nabla u}_{L^p(\R^n)}$$
+dla wszystkich $u \in C^1_c(\R^n)$.
+
+\subsection{Twierdzenie Sobolewa o zanurzaniu w $L^{p^*}$}
+Niech $U$ będzie otwarty i ograniczony, $\partial U \in C^1$, a $u \in W^{1,p}(U)$ dla $1 \leq p < n$.
+Wówczas dla każdego $1 \leq q \leq p^*$
+$$ u \in L^q(U) $$
+oraz
+$$\norm{u}_{L^q(U)} \leq C \norm{u}_{W^{1,p}}$$
+dla stałej $C$ niezależnej od $u$.
+
+\subsection{Nierówność Poincar\'ego z zerowym śladem}
+Niech $U$ będzie otwarty i ograniczony, a $u \in W^{1,p}_0(U)$ dla $1 \leq p < n$.
+Wówczas dla każdego $1 \leq q \leq p^*$
+$$\norm{u}_{L^q(U)} \leq C \norm{\nabla u}_{L^p(U)}$$
+dla stałej $C$ niezależnej od $u$.
+
+\subsection{Nierówność Poincar\'ego z wartością średnią}
+Niech $U$ będzie otwarty, ograniczony i spójny, $\partial U \in C^1$, a $u \in W^{1,p}(U)$ dla $1 \leq p \leq \infty$.
+Istnieje wówczas stała $C$, niezależna od $u$ i taka, że
+$$\norm{u - \dashint_U u}_{L^p(U)} \leq C \norm{\nabla u}_{L^p(U)}.$$
+
+\subsection{Przestrzeń funkcji H\"olderowskich}
+Funkcja jest $f$ H\"olderowska z wykładnikiem $\gamma$, jeżeli
+$$ |f|_{C^{0, \gamma}(U)} = \sup_{x \neq y \in U} \frac{|f(x)-f(y)|}{|x-y|^\gamma} < \infty.$$
+Przestrzeni funkcji H\"olderowskich ciągłych na $\overline{U}$, tj. $C^{0, \gamma}(U) \cap C(\overline{U})$ można nadać normę
+$$ \norm{f}_{C^{0, \gamma}(U)} = \norm{f}_\text{sup} + |f|_{C^{0, \gamma}(U)}.$$
+
+\subsection{Twierdzenie Sobolewa o zanurzaniu w funkcje H\"olderowskie}
+Niech $U$ będzie otwarty i ograniczony, $\partial U \in C^1$, a $u \in W^{1,p}(U)$ dla $p > n$.
+Wówczas istnieje funkcja $u^* \in C^{0, 1-\frac{n}{p}}(U)$ taka, że 
+$$ u = u^* \text{ p.w. w } U$$
+oraz
+$$\norm{u^*}_{C^{0, 1-\frac{n}{p}}(U)} \leq C \norm{u}_{W^{1,p}(U)}$$
+dla stałej $C$ niezależnej od $u$.
+
+\subsection{Twierdzenie Laxa-Milgrama}
+Niech $X$ będzie przestrzenią Hilberta nad $\R$. Jeżeli
+\begin{enumerate}
+    \item $B: X \times X \to \R$ jest formą dwuliniową taką, że 
+    \begin{itemize}
+        \item $B[u,v] \leq C_1 \norm{u}_X \norm{v}_X$ (ograniczoność)
+        \item $B[u,u] \geq C_2 \norm{u}^2_X$ (eliptyczność)
+    \end{itemize}
+    \item $F \in X^*$
+\end{enumerate}
+to istnieje dokładnie jedno $u \in X$ takie, że dla każdego $v \in X$
+$$ B[u,v] = F[v].$$
+
+\subsection{Zwarte zanurzenie}
+Niech $X, Y$ będą przestrzeniami Banacha, $X \subset Y$. Mówimy, że $X$ zanurza się w $Y$ w sposób zwarty i piszemy
+$$ X \subset \subset Y, $$
+o ile
+\begin{enumerate}
+    \item Istnieje stała $C$ taka, że dla każdego $x \in X$
+    $$ \norm{x}_Y \leq C \norm{x}_X. $$
+    \item Każdy ciąg ograniczony w przestrzeni $X$ zawiera podciąg zbieżny w przestrzeni $Y$.
+\end{enumerate} 
+
+\subsection{Twierdzenie Rellicha-Kondradaszowa}
+Niech $U$ będzie otwarty i ograniczony, $\partial U \in C^1$. Jeżeli $1 \leq p < n$, to
+$$ W^{1,p} \subset \subset L^q(U) $$
+dla każdego $1 \leq q < p^*$.
+
+
+\end{document}
