@@ -1,0 +1,10 @@
+
+\.idea/
+
+main\.tex
+
+anki\.csv
+
+*.csv
+
+dashint\.sty
